@@ -1,0 +1,135 @@
+@layout('layouts.template')
+@section('title')
+Data Awal
+@endsection
+
+@section('content')
+<div class="modal" id="tampilModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Edit Data Awal</h3>
+                    </div>
+                <form action="{{route('HomeController.update')}}" method="POST">
+                        {{ csrfField() }}
+                    <div class="card-body">
+                        <div class="form-group">
+                            <input type="hidden" name="id" id="id">
+                            <input type="text" id="nama" name="nama" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="alamat" name="alamat" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <input type="date" id="tanggal" name="tanggal" class="form-control">
+                        </div>
+                        <div align="right">
+                            <input type="submit" class="btn btn-success" value="Simpan">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+        @if(flashMessage('pesan'))
+            <div class="alert alert-success">{{ flashMessage('pesan') }}</div>
+        @endif
+<div class="row py-2">
+        
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h3>Input Data Awal</h3>
+            </div>
+        <form action="{{route('HomeController.create')}}" method="POST" enctype="multipart/form-data">
+                {{ csrfField() }}
+            <div class="card-body">
+                <div class="form-group">
+                    <input type="text" name="nama" id="nama" class="form-control" placeholder="Nama">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="alamat" id="alamat" class="form-control" placeholder="Alamat">
+                </div>
+                <div class="form-group">
+                    <input type="date" name="tanggal" id="tanggal" class="form-control" placeholder="tanggal">
+                </div>
+                <div align="right">
+                    <input type="submit" class="btn btn-success" value="Simpan">
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="card">
+            <div class="card-header">
+                <h3>Data Awal</h3>
+            </div>
+            <div class="card-body">
+               <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>Tanggal</th>
+                    <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @each(data in datas)
+                    <tr>
+                    <td>{{data.nama}}</td>
+                    <td>{{data.alamat}}</td>
+                    <td>{{tanggalIndo(data.tanggal)}}</td>
+                    <td>
+                        <a href="#" onclick="tampilData({{data.id_data}})" class="btn btn-primary">Edit</a>
+                    <a href="{{route('HomeController.delete',{id : data.id_data})}}" class="btn btn-danger">Hapus</a>
+                    </td>
+                    </tr>
+                    @endeach
+                </tbody>
+               </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        function resetModal()
+        {
+          document.getElementById("id_data").value = "";
+          document.getElementById("nama").value = "";
+          document.getElementById("alamat").value = "";
+          document.getElementById("tanggal").value = "";
+        }
+        function tampilData(id_data)
+        {
+            // console.log(id_data);
+            axios.get("/edit/" + id_data)
+        .then(function(res){
+            var data_id = res.data;
+            document.getElementById("id").value = data_id.id_data;
+            document.getElementById("nama").value = data_id.nama;
+            document.getElementById("alamat").value = data_id.alamat;
+            document.getElementById("tanggal").value = tanggalIndo(data.tanggal);
+            $('#tampilModal').modal('show');
+        })
+        .catch(function(err){
+            alert("Terdapat kesalahan dalam mengambil data.");
+            console.log(err)
+            resetModal();
+        })
+        }
+</script>
+@endsection
