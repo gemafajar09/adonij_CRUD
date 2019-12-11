@@ -1,7 +1,42 @@
 'use strict'
 const data = use('App/Models/DataBaru');
+const User = use('App/Models/User');
+const Hash = use('Hash');
 var moment = require('moment');
 class HomeController {
+
+    async daftar ({ view }) {
+        return view.render('register')
+    }
+      
+    async register ({ request, session, response }) {
+      
+          const user = await User.create({
+            username: request.input('username'),
+            email: request.input('email'),
+            password: request.input('password')
+          })
+          session.flash({ pesan : 'Success'});
+          return response.redirect('/')
+        }
+
+    async login({request, response, session, auth}){
+        const { email, password } = request.all()
+        await auth.attempt(email, password)
+            session.flash({ login: 'Selamat Datang.!!' });
+            return response.redirect('home')
+    }
+    
+    async logout ({ auth, response }) {
+        await auth.logout()
+    
+        return response.redirect('/')
+    }
+
+    async home({auth, view}){
+        return view.render('home')
+    }
+
     async index({view}){
         const datas = await data.all();
         return view.render('tampilData', { datas: datas.rows })
