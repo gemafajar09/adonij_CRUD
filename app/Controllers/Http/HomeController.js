@@ -1,12 +1,13 @@
 'use strict'
 const data = use('App/Models/DataBaru');
 const User = use('App/Models/User');
+const Stock = use('App/Models/TambahBarang');
 const Hash = use('Hash');
 var moment = require('moment');
 class HomeController {
 
     async daftar ({ view }) {
-        return view.render('register')
+        return view.render('auth.register')
     }
       
     async register ({ request, session, response }) {
@@ -23,8 +24,13 @@ class HomeController {
     async login({request, response, session, auth}){
         const { email, password } = request.all()
         await auth.attempt(email, password)
-            session.flash({ login: 'Selamat Datang.!!' });
-            return response.redirect('home')
+        try {
+          // return await auth.getUser()
+          return response.redirect('home')
+        } catch (error) {
+          response.send('You are not logged in')
+        }
+            
     }
     
     async logout ({ auth, response }) {
@@ -79,6 +85,15 @@ class HomeController {
 
         session.flash({pesan : 'Data Terhapus'});
         return response.route('HomeController.index');
+    }
+
+    async tambahStock({view}){
+        return view.render('inputStock');
+    }
+
+    async tampilStock(){
+        const stock = await stock.all();
+        return JSON.stringify(stock);
     }
 }
 

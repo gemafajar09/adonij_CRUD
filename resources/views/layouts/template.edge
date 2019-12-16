@@ -55,7 +55,7 @@
   </nav>
 
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="index3.html" class="brand-link">
+    <a href="home" class="brand-link">
       <img src="{{assetsUrl('asset/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">{{ auth.user.username }}</span>
@@ -66,7 +66,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <li class="nav-item has-treeview menu-open">
-            <a href="{{route('/')}}" class="nav-link active">
+            <a href="home" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -78,6 +78,22 @@
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Tampil Data
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+          <a href="{{route('HomeController.index')}}" class="nav-link">
+              <i class="nav-icon fa fa-cart-arrow-down"></i>
+              <p>
+                Pesanan Masuk
+              </p>
+            </a>
+          </li>
+           <li class="nav-item">
+          <a href="stock" class="nav-link">
+              <i class="nav-icon fa fa-cart-plus"></i>
+              <p>
+                Input Stock Barang
               </p>
             </a>
           </li>
@@ -95,7 +111,6 @@
   </div>
   <footer class="main-footer">
     <strong>Copyright &copy; Adonis js Gema Fajar</strong>
-    All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> Mandan
     </div>
@@ -128,6 +143,10 @@
 {{script('asset/plugins/datatables-bs4/js/dataTables.bootstrap4.js')}}
 {{script('https://unpkg.com/axios/dist/axios.min.js')}}
 <script>
+  $(document).ready(function() {
+  $('#summernote').summernote();
+  });
+
   $(function () {
     $("#example1").DataTable();
     $('#example2').DataTable({

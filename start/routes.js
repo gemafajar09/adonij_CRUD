@@ -3,7 +3,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('login');
+Route.on('/').render('auth.login');
 Route.get('/daftar', 'HomeController.daftar').as('daftar');
 Route.post('/register', 'HomeController.register').as('register');
 Route.post('/login', 'HomeController.login').as('login');
@@ -15,3 +15,6 @@ Route.post('/simpan', 'HomeController.create').middleware('auth');
 Route.get('/edit/:id', 'HomeController.edit').middleware('auth');
 Route.post('/update', 'HomeController.update').middleware('auth');
 Route.get('/hapus/:id', 'HomeController.delete').middleware('auth');
+
+Route.get('/stock', 'HomeController.tambahStock').middleware('auth');
+Route.get('/tampilStock', 'HomeController.tampilStock').middleware('auth');
